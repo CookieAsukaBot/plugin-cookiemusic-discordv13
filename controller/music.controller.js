@@ -30,6 +30,21 @@ const startPlaylist = (message, bot) => {
 }
 
 /**
+ * 
+ * @param {Object} bot 
+ * @returns si hay una canción reproduciéndose retorna la queue
+ */
+const getGuildQueue = async (guild, bot) => {
+    let guildQueue = await bot.player.getQueue(guild);
+
+    if (guildQueue?.isPlaying) {
+        return guildQueue;
+    } else {
+        return false;
+    }
+}
+
+/**
  * Reproduce una canción
  * 
  * @param {Object} message del usuario
@@ -64,6 +79,7 @@ const playRandomSong = async (message, queue) => {
 
 module.exports = {
     startPlaylist,
+    getGuildQueue,
     play,
     playRandomSong,
 }
