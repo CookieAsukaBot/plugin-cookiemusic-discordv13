@@ -4,9 +4,9 @@ const {getCurrentSong} = require('../utils/embeds');
 module.exports = {
 	name: 'play',
 	category: 'Música',
-	description: 'Reproduce una canción de YouTube o Spotify.',
+	description: 'Reproduce una canción de YouTube/Spotify/Apple Music.',
 	aliases: ['p'],
-	usage: '[nombre de la canción o enlace de YouTube/Spotify/Apple Music]',
+	usage: '<nombre de la canción o enlace de YouTube, Spotify o Apple Music>',
 	async execute (message, args, bot) {
 		let StartPlaylist = startPlaylist(message.guild.id, message.author, message, bot);
 		if (StartPlaylist.status == false) return message.channel.send(StartPlaylist.message);
