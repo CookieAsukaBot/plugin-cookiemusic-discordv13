@@ -48,15 +48,34 @@ const getGuildQueue = async (guild, bot) => {
  * @param {Object} user 
  * @param {Object} queue 
  * @param {String} args 
+ * @param {Object} bot 
  */
-const play = async (guild, user, queue, args) => {
+const play = async (guild, user, queue, args, bot) => {
     await queue.play(args, {
         requestedBy: `${user.id}`
     }).catch(_ => {
-        if (!bot.player.getQueue(guild)) {
+        if (!bot?.player.getQueue(guild)) { // bug: hay crashes con esto | poner una playlist, poner un mal url
                 queue.stop();
-                return status.failed(`¡**${user.username}**, ocurrió un error!`);
-            };
+            }
+        });
+}
+
+/**
+ * Reproduce una lista.
+ * 
+ * @param {String} guild id del servidor
+ * @param {Object} user 
+ * @param {Object} queue 
+ * @param {String} args
+ * @param {Object} bot  
+ */
+const playlist = async (guild, user, queue, args, bot) => {
+    await queue.playlist(args, {
+        requestedBy: `${user.id}`
+    }).catch(_ => {
+        if (!bot?.player.getQueue(guild)) {
+                queue.stop();;
+            }
         });
 }
 
@@ -166,6 +185,7 @@ module.exports = {
     startPlaylist,
     getGuildQueue,
     play,
+    playlist,
     pause,
     shuffle,
     skip,
