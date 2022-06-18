@@ -61,6 +61,14 @@ const play = async (guild, user, queue, args) => {
 }
 
 // Pause
+const pause = async (guild, bot) => {
+    let guildQueue = await bot.player.getQueue(guild);
+    if (!guildQueue) return;
+
+    console.log({paused: guildQueue.paused});
+    await guildQueue.setPaused(true);
+}
+
 // Stop
 // Volumen
 // Search
@@ -90,6 +98,22 @@ const shuffle = async (guild, bot, username) => {
 }
 
 // Skip
+const skip = async (guild, bot, username) => {
+    let guildQueue = await bot.player.getQueue(guild);
+    if (!guildQueue) return status.failed(`**${username}**, no se está reproduciendo ninguna canción ahora mismo.`);
+
+    await guildQueue.skip();
+
+    let embed = new MessageEmbed()
+        .setColor(process.env.BOT_COLOR)
+        .setAuthor({
+            name: '⏩ Saltada'
+        })
+        .setDescription(`Se **saltó** la canción. ✅`);
+    
+    return status.success("SUCCESS", embed);
+}
+
 // Seek
 
 /**
@@ -111,6 +135,8 @@ module.exports = {
     startPlaylist,
     getGuildQueue,
     play,
+    pause,
     shuffle,
+    skip,
     playRandomSong,
 }
