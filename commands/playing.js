@@ -7,7 +7,7 @@ module.exports = {
 	description: 'Info. de la canción que se está reproduciendo.',
     aliases: ['nowplaying', 'currentsong', 'shazam'],
 	async execute (message, args, bot) {
-        let queue = await getGuildQueue(message.guild.id, bot).data;
+        let queue = (await getGuildQueue(message.guild.id, bot)).data;
 
         if (queue) {
             message.channel.send({
