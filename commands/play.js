@@ -8,8 +8,9 @@ module.exports = {
 	aliases: ['p'],
 	usage: '[nombre de la canción o enlace de YouTube/Spotify/Apple Music]',
 	async execute (message, args, bot) {
-		let {queue, getChannel, hasError} = startPlaylist(message, bot);
-		if (hasError?.status == false) return message.channel.send(hasError?.message);
+		let StartPlaylist = startPlaylist(message, bot);
+		if (StartPlaylist.status == false) return message.channel.send(StartPlaylist.message);
+		let {queue, getChannel} = StartPlaylist.data;
 
 		// Comprobar args
 		if (args.length < 1) {

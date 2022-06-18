@@ -7,7 +7,7 @@ module.exports = {
 	description: 'Detiene la lista de reproducción.',
 	aliases: ['disconnect'],
 	async execute (message, args, bot) {
-        let queue = await getGuildQueue(message.guild.id, bot);
+        let queue = (await getGuildQueue(message.guild.id, bot)).data;
 
         let embed = new MessageEmbed()
             .setColor(process.env.BOT_COLOR)

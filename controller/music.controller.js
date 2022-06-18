@@ -1,3 +1,4 @@
+const status = require('../helpers/status');
 const {getRandomSong} = require('../controller/song.controller');
 
 /**
@@ -14,18 +15,9 @@ const startPlaylist = (message, bot) => {
 
     // Comprobar usuario
     if (typeof getChannel == null || typeof getChannel == undefined || !getChannel) {
-        return {
-            hasError: {
-                status: false,
-                message: `**${message.author.username}**, únete al canal de voz para usar este comando.`
-            }
-        }
+        return status.failed(`**${message.author.username}**, únete al canal de voz para usar este comando.`)
     } else {
-        return {
-            status: true,
-            queue,
-            getChannel
-        }
+        return status.success("SUCCESS", {queue, getChannel});
     }
 }
 
@@ -38,9 +30,9 @@ const getGuildQueue = async (guild, bot) => {
     let guildQueue = await bot.player.getQueue(guild);
 
     if (guildQueue?.isPlaying) {
-        return guildQueue;
+        return status.success("SUCCESS", guildQueue);
     } else {
-        return false;
+        return status.failed("No se está reproduciendo ninguna canción ahora mismo.");
     }
 }
 
@@ -57,7 +49,7 @@ const play = async (message, queue, args) => {
     }).catch(_ => {
         if (!bot.player.getQueue(message.guild.id)) {
                 queue.stop();
-                return message.channel.send(`¡**${message.author.username}**, ocurrió un error!`);
+                return status.failed(`¡**${message.author.username}**, ocurrió un error!`);
             };
         });
 }
@@ -73,7 +65,7 @@ const play = async (message, queue, args) => {
 const playRandomSong = async (message, queue) => {
     let randomSong = await getRandomSong(message.guild.id); // todo: que funcione a base de la guild
     console.log({randomSong});
-    if (!randomSong) return message.channel.send(`¡${message.author.username}, necesitas de reproducir canciones antes de poder usar este comando!`);
+    if (!randomSong) return status.failed(`¡${message.author.username}, necesitas de reproducir canciones antes de poder usar este comando!`);
     play(message, queue, randomSong[0].url.toString());
 }
 
