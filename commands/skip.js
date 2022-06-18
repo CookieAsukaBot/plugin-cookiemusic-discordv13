@@ -4,6 +4,7 @@ module.exports = {
 	name: 'skip',
     category: 'Música',
 	description: 'Salta la canción que se está reproduciendo.',
+    aliases: ['saltar'],
 	async execute (message, args, bot) {
         let Skip = await skip(message.guild.id, bot, message.author.username);
         if (!Skip.status) return message.channel.send(Skip.message);
