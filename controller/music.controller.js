@@ -60,13 +60,37 @@ const play = async (guild, user, queue, args) => {
         });
 }
 
-// Pause
-const pause = async (guild, bot) => {
+/**
+ * Pausa o reanuda la canción.
+ * 
+ * @param {String} guild id del servidor.
+ * @param {Object} bot
+ * @param {String} username nombre del usuario.
+ * @returns 
+ */
+const pause = async (guild, bot, username) => {
     let guildQueue = await bot.player.getQueue(guild);
-    if (!guildQueue) return;
+    if (!guildQueue) return status.failed(`**${username}**, no se está reproduciendo ninguna canción ahora mismo.`);
 
-    console.log({paused: guildQueue.paused});
-    await guildQueue.setPaused(true);
+    await guildQueue.setPaused(guildQueue.paused = !guildQueue.paused);
+    let statusName, statusDescription;
+
+    if (guildQueue.paused) {
+        statusName = "⏸ Pause";
+        statusDescription = `Se **pausó** la canción. ✅`;
+    } else {
+        statusName = "▶ Reanudado";
+        statusDescription = `Se **reanudó** la canción. ✅`;
+    }
+
+    let embed = new MessageEmbed()
+        .setColor(process.env.BOT_COLOR)
+        .setAuthor({
+            name: statusName
+        })
+        .setDescription(statusDescription);
+
+    return status.success("SUCCESS", embed);
 }
 
 // Stop
@@ -78,8 +102,8 @@ const pause = async (guild, bot) => {
  * 
  * @param {String} guild id del servidor.
  * @param {Object} bot
- * @param {String} username nombre de usuario.
- * @returns retorna un embed su sus-cedió correctamente.
+ * @param {String} username nombre del usuario.
+ * @returns retorna un embed si sus-cedió correctamente.
  */
 const shuffle = async (guild, bot, username) => {
     let guildQueue = await bot.player.getQueue(guild);
@@ -97,7 +121,14 @@ const shuffle = async (guild, bot, username) => {
     return status.success("SUCCESS", embed);
 }
 
-// Skip
+/**
+ * Salta la canción que se está reproduciendo.
+ * 
+ * @param {String} guild id del servidor.
+ * @param {Object} bot
+ * @param {String} username nombre del usuario.
+ * @returns retorna un embed si suscedió correctamente.
+ */
 const skip = async (guild, bot, username) => {
     let guildQueue = await bot.player.getQueue(guild);
     if (!guildQueue) return status.failed(`**${username}**, no se está reproduciendo ninguna canción ahora mismo.`);
