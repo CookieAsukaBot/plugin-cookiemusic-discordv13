@@ -6,13 +6,10 @@ module.exports = {
 	description: 'Las canciones se reproducirán en un orden aleatorio.',
 	async execute (message, args, bot) {
         let Shuffle = await shuffle(message.guild.id, bot, message.author.username);
+        if (!Shuffle.status) return message.channel.send(Shuffle.message);
 
-        if (Shuffle.status) {
-            message.channel.send({
-                embeds: [Shuffle.data]
-            });
-        } else {
-            message.channel.send(Shuffle.message);
-        }
+        message.channel.send({
+            embeds: [Shuffle.data]
+        });
 	}
 }
