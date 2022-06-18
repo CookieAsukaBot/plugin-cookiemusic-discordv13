@@ -1,3 +1,4 @@
+const {MessageEmbed} = require('discord.js');
 const status = require('../helpers/status');
 const {getRandomSong} = require('../controller/song.controller');
 
@@ -63,6 +64,31 @@ const play = async (guild, user, queue, args) => {
 // Stop
 // Volumen
 // Search
+
+/**
+ * Desorganiza el orden de las canciones de manera aleatoria.
+ * 
+ * @param {String} guild id del servidor.
+ * @param {Object} bot
+ * @param {String} username nombre de usuario.
+ * @returns retorna un embed su sus-cedió correctamente.
+ */
+const shuffle = async (guild, bot, username) => {
+    let guildQueue = await bot.player.getQueue(guild);
+    if (!guildQueue) return status.failed(`**${username}**, no se está reproduciendo ninguna canción ahora mismo.`);
+
+    await guildQueue.shuffle();
+
+    let embed = new MessageEmbed()
+        .setColor(process.env.BOT_COLOR)
+        .setAuthor({
+            name: '🔀 Shuffle'
+        })
+        .setDescription(`Se activó el modo **Shuffle**. ✅`);
+
+    return status.success("SUCCESS", embed);
+}
+
 // Skip
 // Seek
 
@@ -85,5 +111,6 @@ module.exports = {
     startPlaylist,
     getGuildQueue,
     play,
+    shuffle,
     playRandomSong,
 }
