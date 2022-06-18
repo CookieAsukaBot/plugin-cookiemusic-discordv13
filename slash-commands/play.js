@@ -7,7 +7,7 @@ module.exports = {
 		.setDescription('Reproduce una canción.')
         .addStringOption(option =>
             option.setName('input')
-                .setDescription("Nombre de la canción o URL de YouTube/Spotify/Apple Music.")
+                .setDescription("Ingresa el nombre de la canción. También puedes usar un URL de YouTube, Spotify o Apple Music.")
                 .setRequired(true)),
 	async execute(interaction, bot) {
         let StartPlaylist = startPlaylist(interaction.guildId, interaction.user, interaction, bot);
