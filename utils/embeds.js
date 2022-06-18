@@ -11,7 +11,7 @@ const getCurrentSong = (guildQueue) => {
         .setURL(`${guildQueue.nowPlaying.url}`)
         .setThumbnail(`${guildQueue.nowPlaying.thumbnail}`)
         .addField('Pedida por', `<@${guildQueue.nowPlaying.requestedBy}>`)
-        .addField('Duración', `[${ProgressBar.bar}] \`${ProgressBar.times}\``);
+        .addField('Duración', `[${ProgressBar.bar.replaceAll(' ', '⠀')}] \`${ProgressBar.times}\``);
 }
 
 module.exports = {
