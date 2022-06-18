@@ -2,20 +2,22 @@ const status = require('../helpers/status');
 const {getRandomSong} = require('../controller/song.controller');
 
 /**
- * Crea un lista de reproducción
+ * Crea un lista de reproducción.
  * 
+ * @param {String} guild id del servidor
+ * @param {Object} user 
  * @param {Object} message 
  * @param {Object} bot 
  * @returns retorna queue y getChannel
  */
-const startPlaylist = (message, bot) => {
+const startPlaylist = ( guild, user, message, bot) => {
     // Crear lista
-    let queue = bot.player.createQueue(message.guild.id, { data: { queueInitMessage: message } });
+    let queue = bot.player.createQueue(guild, { data: { queueInitMessage: message } });
     let getChannel = message.member.voice.channel;
 
     // Comprobar usuario
     if (typeof getChannel == null || typeof getChannel == undefined || !getChannel) {
-        return status.failed(`**${message.author.username}**, únete al canal de voz para usar este comando.`)
+        return status.failed(`**${user.username}**, únete al canal de voz para usar este comando.`)
     } else {
         return status.success("SUCCESS", {queue, getChannel});
     }
@@ -23,7 +25,9 @@ const startPlaylist = (message, bot) => {
 
 /**
  * 
- * @param {Object} bot 
+ * 
+ * @param {String} guild id del servidor
+ * @param {*} bot 
  * @returns si hay una canción reproduciéndose retorna la queue
  */
 const getGuildQueue = async (guild, bot) => {
@@ -37,19 +41,20 @@ const getGuildQueue = async (guild, bot) => {
 }
 
 /**
- * Reproduce una canción
+ * Reproduce una canción.
  * 
- * @param {Object} message del usuario
- * @param {Object} queue lista del servidor
- * @param {String} args nombre o url de la canción
+ * @param {String} guild id del servidor
+ * @param {Object} user 
+ * @param {Object} queue 
+ * @param {String} args 
  */
-const play = async (message, queue, args) => {
+const play = async (guild, user, queue, args) => {
     await queue.play(args, {
-        requestedBy: `${message.author.id}`
+        requestedBy: `${user.id}`
     }).catch(_ => {
-        if (!bot.player.getQueue(message.guild.id)) {
+        if (!bot.player.getQueue(guild)) {
                 queue.stop();
-                return status.failed(`¡**${message.author.username}**, ocurrió un error!`);
+                return status.failed(`¡**${user.username}**, ocurrió un error!`);
             };
         });
 }
@@ -61,12 +66,19 @@ const play = async (message, queue, args) => {
 // Skip
 // Seek
 
-// Random
-const playRandomSong = async (message, queue) => {
-    let randomSong = await getRandomSong(message.guild.id); // todo: que funcione a base de la guild
+/**
+ * Reproduce una canción aleatoria.
+ * 
+ * @param {String} guild id del servidor
+ * @param {Object} user 
+ * @param {Object} queue 
+ * @returns 
+ */
+const playRandomSong = async (guild, user, queue) => {
+    let randomSong = await getRandomSong(guild); // todo: que funcione a base de la guild
     console.log({randomSong});
-    if (!randomSong) return status.failed(`¡${message.author.username}, necesitas de reproducir canciones antes de poder usar este comando!`);
-    play(message, queue, randomSong[0].url.toString());
+    if (!randomSong) return status.failed(`¡${user.username}, necesitas de reproducir canciones antes de poder usar este comando!`);
+    play(guild, user, queue, randomSong[0].url.toString());
 }
 
 module.exports = {

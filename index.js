@@ -10,7 +10,7 @@ module.exports = {
     async plugin (bot) {
         // Cargar comandos
         require('../../events/commands')(bot, path.join(__dirname, 'commands'));
-        // require('../../events/commands')(bot, path.join(__dirname, 'slash-commands'), true);
+        require('../../events/commands')(bot, path.join(__dirname, 'slash-commands'), true);
 
         // Reproductor
         const player = new Player(bot, {

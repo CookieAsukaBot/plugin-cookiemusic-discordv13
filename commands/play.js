@@ -8,7 +8,7 @@ module.exports = {
 	aliases: ['p'],
 	usage: '[nombre de la canción o enlace de YouTube/Spotify/Apple Music]',
 	async execute (message, args, bot) {
-		let StartPlaylist = startPlaylist(message, bot);
+		let StartPlaylist = startPlaylist(message.guild.id, message.author, message, bot);
 		if (StartPlaylist.status == false) return message.channel.send(StartPlaylist.message);
 		let {queue, getChannel} = StartPlaylist.data;
 
@@ -26,9 +26,9 @@ module.exports = {
 		// Reproducir
 		// Comprobar random
 		if (args[0].toLowerCase() == "random") {
-			playRandomSong(message, queue);
+			playRandomSong(message.guild.id, message.author, queue);
 		} else {
-			play(message, queue, args.join(' ').trim());
+			play(message.guild.id, message.author, queue, args.join(' ').trim());
 		}
     }
 }
