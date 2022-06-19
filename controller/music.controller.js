@@ -1,6 +1,8 @@
 const {MessageEmbed} = require('discord.js');
+const lyricsFinder = require('lyrics-finder');
 const status = require('../helpers/status');
 const {getRandomSong} = require('../controller/song.controller');
+const {generateLyricsEmbeds} = require('../utils/embeds');
 
 /**
  * Crea un lista de reproducción.
@@ -112,10 +114,6 @@ const pause = async (guild, bot, username) => {
     return status.success("SUCCESS", embed);
 }
 
-// Stop
-// Volumen
-// Search
-
 /**
  * Desorganiza el orden de las canciones de manera aleatoria.
  * 
@@ -164,6 +162,27 @@ const skip = async (guild, bot, username) => {
     return status.success("SUCCESS", embed);
 }
 
+/**
+ * Muestra la letra de una canción.
+ * 
+ * @param {*} song nombre de la canción o el objecto.
+ * @returns retorna un array de embeds si sucedió correctamente.
+ */
+const lyrics = async (song) => {
+    if (!song || song.length <= 0) return status.failed("ingresa el nombre de la canción.");
+
+    let response = await lyricsFinder(song);
+
+    if (response) {
+        return status.success("SUCCESS", generateLyricsEmbeds(response, song));
+    } else {
+        return status.failed("no se encontró la letra de esta canción.");
+    }
+}
+
+// Search
+// Volumen
+// Queue
 // Seek
 
 /**
@@ -189,5 +208,6 @@ module.exports = {
     pause,
     shuffle,
     skip,
+    lyrics,
     playRandomSong,
 }
