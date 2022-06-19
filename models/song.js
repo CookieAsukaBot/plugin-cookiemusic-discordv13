@@ -30,4 +30,4 @@ const schema = new Schema({
     timestamps: true
 });
 
-module.exports = model('song', schema);
+module.exports = model('music_song', schema);

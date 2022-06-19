@@ -1,4 +1,5 @@
 const {MessageEmbed} = require('discord.js');
+const Song = require('../controller/song.controller');
 
 /**
  * Genera un embed con el color de el bot.
@@ -29,6 +30,16 @@ module.exports = (bot) => {
             await queue.data.queueInitMessage.channel.send({
                 embeds: [embed]
             });
+
+            await Song.findOne({
+                guild: queue.data.queueInitMessage.guildId,
+                userID: queue.data.queueInitMessage.author.id,
+                metadata: {
+                    title: song.name,
+                    url: song.url,
+                    duration: song.duration
+                }
+            })
         })
         .on('playlistAdd', async (queue, playlist) => {
             let embed = generateEmbed();
