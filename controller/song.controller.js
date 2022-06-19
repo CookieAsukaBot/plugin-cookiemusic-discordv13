@@ -1,6 +1,11 @@
 const Song = require('../models/song');
 
-// findOne
+/**
+ * Busca una canción y si no la encuentra la guarda en la DB.
+ * 
+ * @param {Object} model datos a guardar
+ * @returns retorna la canción encontrada/guardada.
+ */
 const findOne = async (model) => {
     let {guild, userID, metadata} = model;
     let song = await Song.findOne({ "metadata.url": metadata.url });
@@ -22,11 +27,17 @@ const findOne = async (model) => {
 }
 
 /**
+ * Retorna una canción aleatoria guardada en la DB.
+ * 
  * @param {String} guild id del servidor
  * @returns devuelve una canción aleatoria
  */
 const getRandomSong = async (guild) => {
-    return random = await Song.aggregate([{ $sample: { size: 1 } }]);
+    return random = await Song.aggregate([{
+        $match: {guild}
+    }, {
+        $sample: {size: 1}
+    }]);
 }
 
 module.exports = {
