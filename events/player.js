@@ -33,13 +33,13 @@ module.exports = (bot) => {
 
             await Song.findOne({
                 guild: queue.data.queueInitMessage.guildId,
-                userID: queue.data.queueInitMessage.author.id,
+                userID: queue.data.queueInitMessage?.author?.id || queue.data.queueInitMessage.user.id,
                 metadata: {
                     title: song.name,
                     url: song.url,
                     duration: song.duration
                 }
-            })
+            });
         })
         .on('playlistAdd', async (queue, playlist) => {
             let embed = generateEmbed();
