@@ -16,9 +16,13 @@ module.exports = {
         if (!Lyrics.status) {
             interaction.reply(`**${interaction.user.username}**, ${Lyrics.message}`);
         } else {
-            interaction.reply({
-                embeds: Lyrics.data
-            });
+            if (Array.isArray(Lyrics.data)) {
+                await interaction.reply({
+                    embeds: [Lyrics.data[0]]
+                });
+            } else {
+                interaction.reply(Lyrics.data);
+            }
         }
 	},
 }
