@@ -180,9 +180,11 @@ const lyrics = async (song) => {
     }
 }
 
-// Search
 // Volumen
 // Queue
+const queue = (songs) => {
+}
+
 // Seek
 
 /**
@@ -194,10 +196,9 @@ const lyrics = async (song) => {
  * @returns 
  */
 const playRandomSong = async (guild, user, queue) => {
-    let randomSong = await getRandomSong(guild); // todo: que funcione a base de la guild
-    console.log({randomSong});
+    let randomSong = await getRandomSong(guild);
     if (!randomSong) return status.failed(`¡${user.username}, necesitas de reproducir canciones antes de poder usar este comando!`);
-    play(guild, user, queue, randomSong[0].url.toString());
+    play(guild, user, queue, randomSong[0].metadata.url);
 }
 
 module.exports = {
