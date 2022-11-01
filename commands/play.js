@@ -1,4 +1,4 @@
-const {startPlaylist, play, playRandomSong} = require('../controller/music.controller');
+const {startPlaylist, play, playRandomSong, volumen} = require('../controller/music.controller');
 const {getCurrentSong} = require('../utils/embeds');
 
 module.exports = {
@@ -26,9 +26,12 @@ module.exports = {
 		// Reproducir
 		// Comprobar random
 		if (args[0].toLowerCase() == "random") {
-			playRandomSong(message.guild.id, message.author, queue);
+			await playRandomSong(message.guild.id, message.author, queue);
 		} else {
-			play(message.guild.id, message.author, queue, args.join(' ').trim());
+			await play(message.guild.id, message.author, queue, args.join(' ').trim());
 		}
+
+		// Volumen
+		await volumen(message.guild.id, bot);
     }
 }

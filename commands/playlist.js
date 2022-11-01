@@ -24,6 +24,9 @@ module.exports = {
 		await queue.join(getChannel);
 
 		// Reproducir
-        playlist(message.guild.id, message.author, queue, args.join(' ').trim());
+        await playlist(message.guild.id, message.author, queue, args.join(' ').trim());
+
+		// Volumen
+		await volumen(message.guild.id, bot);
     }
 }

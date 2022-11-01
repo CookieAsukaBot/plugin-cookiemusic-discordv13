@@ -2,6 +2,7 @@ const {MessageEmbed} = require('discord.js');
 const lyricsFinder = require('lyrics-finder');
 const status = require('../helpers/status');
 const {getRandomSong} = require('../controller/song.controller');
+const Config = require('../controller/config.controller'); // import just necesary
 const {generateLyricsEmbeds} = require('../utils/embeds');
 
 /**
@@ -180,7 +181,19 @@ const lyrics = async (song) => {
     }
 }
 
-// Volumen
+/**
+ * Asigna el volumen del bot.
+ * 
+ * @param {String} guild ID del servidor
+ * @param {Object} bot 
+ */
+const volumen = async (guild, bot) => {
+    let config = (await Config.getConfig(guild)).data;
+    let guildQueue = await bot.player.getQueue(guild);
+    await guildQueue.setVolume(config.volumen);
+    return status.success("SUCCESS", config);
+}
+
 // Queue
 const queue = (songs) => {
 }
@@ -210,5 +223,6 @@ module.exports = {
     shuffle,
     skip,
     lyrics,
+    volumen,
     playRandomSong,
 }

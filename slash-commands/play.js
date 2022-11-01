@@ -29,6 +29,9 @@ module.exports = {
             play(interaction.guildId, interaction.user, queue, args);
         }
 
+        // Volumen
+        await volumen(message.guild.id, bot);
+
         return interaction.reply({
             content: `¡Tu canción se agregó a la lista!`,
             ephemeral: true
