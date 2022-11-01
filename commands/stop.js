@@ -4,7 +4,7 @@ const {getGuildQueue} = require('../controller/music.controller');
 module.exports = {
 	name: 'stop',
     category: 'Música',
-	description: 'Detiene la lista de reproducción.',
+	description: 'Detiene y remueve la lista de reproducción.',
 	aliases: ['disconnect', 'detener'],
 	async execute (message, args, bot) {
         let queue = (await getGuildQueue(message.guild.id, bot)).data;

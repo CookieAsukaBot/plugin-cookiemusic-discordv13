@@ -5,7 +5,7 @@ const {getGuildQueue} = require('../controller/music.controller');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('stop')
-		.setDescription('Detiene la lista de reproducción.'),
+		.setDescription('Detiene y remueve la lista de reproducción.'),
 	async execute(interaction, bot) {
         let queue = (await getGuildQueue(interaction.guildId, bot)).data;
 

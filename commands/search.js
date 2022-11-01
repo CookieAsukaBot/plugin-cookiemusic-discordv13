@@ -1,6 +1,6 @@
 const {MessageEmbed} = require('discord.js');
 const {Utils} = require('discord-music-player');
-const {startPlaylist, play} = require('../controller/music.controller');
+const {startPlaylist, play, volumen} = require('../controller/music.controller');
 
 let config = {
     resultCount: 9,
@@ -12,7 +12,7 @@ let footer = `__Escribe el **número** de la canción que quieres...__\nTienes *
 module.exports = {
     name: 'search',
     category: 'Música',
-    description: 'Search and select a song from the lists',
+    description: 'Busca una canción, después selecionala (de la lista).',
     aliases: ['buscar'],
     usage: ['<nombre de la canción>'],
 	async execute (message, args, bot) {
@@ -66,7 +66,8 @@ module.exports = {
 
         if (song) {
 		    await queue.join(getChannel);
-            play(message.guild.id, message.author, queue, song.url, bot);
+            await play(message.guild.id, message.author, queue, song.url, bot);
+            await volumen(message.guild.id, bot);
         }
 	}
 }
