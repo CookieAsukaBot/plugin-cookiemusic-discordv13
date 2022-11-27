@@ -1,4 +1,4 @@
-const {startPlaylist, playlist} = require('../controller/music.controller');
+const {startPlaylist, playlist, volumen} = require('../controller/music.controller');
 const {getCurrentSong} = require('../utils/embeds');
 
 module.exports = {

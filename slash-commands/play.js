@@ -1,5 +1,5 @@
 const {SlashCommandBuilder} = require('@discordjs/builders');
-const {startPlaylist, play, playRandomSong} = require('../controller/music.controller');
+const {startPlaylist, play, playRandomSong, volumen} = require('../controller/music.controller');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -30,11 +30,11 @@ module.exports = {
         }
 
         // Volumen
-        await volumen(message.guild.id, bot);
+        await volumen(interaction.guildId, bot);
 
         return interaction.reply({
             content: `¡Tu canción se agregó a la lista!`,
             ephemeral: true
-        })
+        });
 	},
 }
